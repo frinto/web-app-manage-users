@@ -54,6 +54,19 @@ public class UserServlet extends HttpServlet
             HttpServletResponse response)
             throws ServletException, IOException
     {
+       String newPassword = request.getParameter("changePasswordTextField");
+       
+       HttpSession session = request.getSession();
+       User user = (User) session.getAttribute("regularUserSession");
+       
+       if(newPassword.equals(""))
+       {
+           request.setAttribute("errorPassChangeFailed", "Password value must be provided for change");
+           request.getServletContext().getRequestDispatcher("/WEB-INF/user.jsp").forward(request,response);
+       }else
+       {
+           
+       }
        
     }
 
