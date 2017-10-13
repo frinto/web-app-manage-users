@@ -26,4 +26,5 @@
         </form>
     </body>
     ${successPassChangeMsg}
+    ${errorPassChangeFailed}
 </html>

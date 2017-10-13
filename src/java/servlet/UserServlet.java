@@ -5,6 +5,11 @@
  */
 package servlet;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -26,27 +31,25 @@ import users.User;
 public class UserServlet extends HttpServlet
 {
 
-   @Override
+    @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException
     {
         HttpSession session = request.getSession();
-        
+
         User user = (User) session.getAttribute("regularUserSession");
-        
-        if(user == null)
+
+        if (user == null)
         {
             response.sendRedirect("login");
-        }
-        else
+        } else
         {
             String username = user.getUsername();
             request.setAttribute("usernameELAttribute", username);
-            request.getServletContext().getRequestDispatcher("/WEB-INF/user.jsp").forward(request,response);
+            request.getServletContext().getRequestDispatcher("/WEB-INF/user.jsp").forward(request, response);
         }
-        
-        
+
     }
 
     @Override
@@ -54,20 +57,32 @@ public class UserServlet extends HttpServlet
             HttpServletResponse response)
             throws ServletException, IOException
     {
-       String newPassword = request.getParameter("changePasswordTextField");
-       
-       HttpSession session = request.getSession();
-       User user = (User) session.getAttribute("regularUserSession");
-       
-       if(newPassword.equals(""))
-       {
-           request.setAttribute("errorPassChangeFailed", "Password value must be provided for change");
-           request.getServletContext().getRequestDispatcher("/WEB-INF/user.jsp").forward(request,response);
-       }else
-       {
-           
-       }
-       
+        String newPassword = request.getParameter("changePasswordTextField");
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("regularUserSession");
+
+        String path = getServletContext().getRealPath("/WEB-INF/users.txt");
+        // to read files
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path),true));
+        PrintWriter pw = new PrintWriter(bw);
+
+        if (newPassword.equals(""))
+        {
+            request.setAttribute("errorPassChangeFailed", "Password value must be provided for change");
+            request.getServletContext().getRequestDispatcher("/WEB-INF/user.jsp").forward(request, response);
+        } else
+        {
+            String userAllValues = user.getUsername().trim() + "," + newPassword.trim() + "," + Integer.toString(user.isIsAdmin()).trim();
+            pw.print("\n"+userAllValues.trim());
+            pw.close();
+            bw.close();
+            
+            request.setAttribute("successPassChangeMsg", "Password updated");
+            request.getServletContext().getRequestDispatcher("/WEB-INF/user.jsp").forward(request, response);
+        }
+        
+
     }
 
 }

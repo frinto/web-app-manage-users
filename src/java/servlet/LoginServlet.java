@@ -77,13 +77,11 @@ public class LoginServlet extends HttpServlet
 
             String usernameFromTextFile = values[0];
             String passwordFromTextFile = values[1];
-            String isAdminFromTextFile = values[2];
-
-            int isAdminFlag = Integer.parseInt(isAdminFromTextFile);
+            int isAdminFromTextFile = Integer.parseInt(values[2]);
 
             if (usernameFromTextFile.equals(username) && passwordFromTextFile.equals(password))
             {
-                if (isAdminFlag == 0)
+                if (isAdminFromTextFile == 0)
                 {
 
                     HttpSession session = request.getSession();
@@ -93,7 +91,7 @@ public class LoginServlet extends HttpServlet
                     response.sendRedirect("user");
                     return;
                 }
-                if (isAdminFlag == 1)
+                if (isAdminFromTextFile == 1)
                 {
                     response.sendRedirect("admin");
                     return;
