@@ -1,0 +1,5 @@
+admin,password,1
+user1,user1,0
+abe,password1,0
+bob,password2,0
+carl,password3,0
