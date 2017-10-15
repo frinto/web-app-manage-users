@@ -75,12 +75,14 @@ public class AdminServlet extends HttpServlet
             }
             br.close();
             request.setAttribute("userList", userList);
-
+            int maxIndex = userList.size()-1;
+            request.setAttribute("maxIndex", maxIndex);
             request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
         } else if ((user != null) && (action != null))
         {
             request.setAttribute("userList", userList);
-
+            int maxIndex = userList.size()-1;
+            request.setAttribute("maxIndex", maxIndex);
             request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
         }
 
@@ -119,6 +121,8 @@ public class AdminServlet extends HttpServlet
                 if (newUsername.equals(usernameFromTextFile))
                 {
                     request.setAttribute("userList", userList);
+                    int maxIndex = userList.size()-1;
+                    request.setAttribute("maxIndex", maxIndex);
                     request.setAttribute("errorMsgAddUser", "Username already in use, please choose another");
                     request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
                     return;
@@ -126,6 +130,8 @@ public class AdminServlet extends HttpServlet
                 else if(newUsername.equals(""))
                 {
                     request.setAttribute("userList", userList);
+                    int maxIndex = userList.size()-1;
+                    request.setAttribute("maxIndex", maxIndex);
                     request.setAttribute("errorMsgAddUser", "Please Fill In The Fields");
                     request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
                     return;
@@ -143,12 +149,18 @@ public class AdminServlet extends HttpServlet
             userList.add(user);
 
             request.setAttribute("userList", userList);
-
+            int maxIndex = userList.size()-1;
+            request.setAttribute("maxIndex", maxIndex);
             request.setAttribute("successMsgAddUser", "New User Added");
             request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
         } else if (action.equals("deleteUser"))
-        {
-
+        { 
+            int maxIndex = userList.size()-1;
+            request.setAttribute("maxIndex", maxIndex);
+            int index = Integer.parseInt(request.getParameter("indexDeleteUserTextField"));
+            
+            userList.remove(index);
+            
             request.setAttribute("userList", userList);
             request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
         }

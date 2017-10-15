@@ -33,22 +33,24 @@
 
         <table>
             <tr>
+                <th>index</th>
                 <th>Username</th>
                 <th>Password</th>
-                <th>Delete</th>
             </tr>
             
             
             <c:forEach var="item" items="${userList}" varStatus="status">
                 <tr>
+                    <td><c:out value="${status.index}"/></td>
                     <td><c:out value="${item.username}"/></td>
                     <td><c:out value="${item.password}"/></td>
-                    <td><input type="radio" name="deleteUserRadio" value="${status.index}"/></td>
                 </tr>
             </c:forEach>
         </table>
         
         <form action="admin?action=deleteUser" method="post">
+            <p>Specify index to delete:</p>
+            <input type="number" name="indexDeleteUserTextField" min="1" max="${maxIndex}" value="1"/><br>
             <input type="submit" value="Delete User"/>
         </form>
 
