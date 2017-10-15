@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +32,9 @@ import users.User;
 public class AdminServlet extends HttpServlet
 {
 
+    //array List of users
+    ArrayList<User> userList = new ArrayList<User>();
+
     @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response)
@@ -38,14 +42,49 @@ public class AdminServlet extends HttpServlet
     {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("adminUserSession");
+        
+        String action = request.getParameter("action");
 
-        if (user == null)
+        if ((user == null) && (action != null))
         {
             response.sendRedirect("login");
-        } else
+        } else if((user == null) && (action == null))
         {
+             request.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        }
+        else if ((user != null) && (action == null))
+        {
+            userList.clear();
+            String path = getServletContext().getRealPath("/WEB-INF/users.txt");
+            // to read files
+            BufferedReader br = new BufferedReader(new FileReader(new File(path)));
+            String line = null;
+
+            while ((line = br.readLine()) != null)
+            {
+
+                String[] values = line.split(",");
+
+                String usernameFromTextFile = values[0];
+                String passwordFromTextFile = values[1];
+                int isAdminFromTextFile = Integer.parseInt(values[2]);
+                
+                User temp = new User(usernameFromTextFile, passwordFromTextFile, isAdminFromTextFile);
+                
+                userList.add(temp);
+
+            }
+            br.close();
+            request.setAttribute("userList", userList);
+            
+            request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
+        }else if((user != null) && (action != null))
+        {
+            request.setAttribute("userList", userList);
+            
             request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
         }
+        
 
     }
 
@@ -88,10 +127,15 @@ public class AdminServlet extends HttpServlet
         pw.close();
         bw.close();
         br.close();
+
+        User user = new User(newUsername, newPassword, 0);
+
+        userList.add(user);
+
+        request.setAttribute("userList", userList);
+
         request.setAttribute("successMsgAddUser", "New User Added");
         request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
-
-        
 
     }
 }

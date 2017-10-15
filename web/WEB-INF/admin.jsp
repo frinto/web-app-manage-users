@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>admin</title>
+        <title>Admin Panel</title>
         <link rel="stylesheet" href="styles/main.css" type="text/css"/>
     </head>
     <body>
@@ -25,7 +25,7 @@
             password: <input type="password" name="newPasswordTextField"value=""/>  <br>
             <input type="submit" value="Add User"/>
         </form> <br>
-        
+
         ${errorMsgAddUser}
         ${successMsgAddUser}
 
@@ -37,16 +37,21 @@
                 <th>Password</th>
                 <th>Delete</th>
             </tr>
-            <tr>
-                <td>test</td>
-                <td>test</td>
-                <td><input type="radio" name="test"/></td>
-            </tr>
+            
+            
+            <c:forEach var="item" items="${userList}">
+                <tr>
+                    <td><c:out value="${item.username}"/></td>
+                    <td><c:out value="${item.password}"/></td>
+                    <td><input type="radio" name="test"/></td>
+                </tr>
+            </c:forEach>
         </table>
+        
         <form action="admin?action=deleteUser" method="post">
             <input type="submit" value="Delete User"/>
         </form>
-        
+
 
 
 
