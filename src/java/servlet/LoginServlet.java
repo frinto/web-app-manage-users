@@ -43,6 +43,11 @@ public class LoginServlet extends HttpServlet
             response.sendRedirect("user");
             return;
         }
+        if(session.getAttribute("adminUserSession") != null && (action==null))
+        {
+            response.sendRedirect("admin");
+            return;
+        }
         if(action != null)
         {
             session.invalidate();
@@ -93,6 +98,10 @@ public class LoginServlet extends HttpServlet
                 }
                 if (isAdminFromTextFile == 1)
                 {
+                    HttpSession session = request.getSession();
+                    User user = new User(username, password, 1);
+                    session.setAttribute("adminUserSession", user);
+                    
                     response.sendRedirect("admin");
                     return;
                 }

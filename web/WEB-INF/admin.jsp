@@ -12,6 +12,30 @@
         <title>admin</title>
     </head>
     <body>
-        <h1>admin</h1>
+        <h1>Admin Page</h1><br>
+        <a href="admin?action=refresh">Refresh</a>
+        <a href="login?action=logout">Logout</a><br>
+
+        <h1>Add User</h1><br>
+
+        <form action="admin?action=addUser" method="post">
+        New username: <input type="text" name="newUsernameTextField" value=""/> <br>
+        password: <input type="password" name="newPasswordTextField"value=""/>  <br>
+		<input type="submit" value="Add User"/>
+		</form> <br>
+
+		<h1>List of Users</h1><br>
+
+
+
+
+
+
+
+
+
+
+
+
     </body>
 </html>
