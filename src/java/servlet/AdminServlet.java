@@ -5,6 +5,11 @@
  */
 package servlet;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -25,6 +30,7 @@ import users.User;
 })
 public class AdminServlet extends HttpServlet
 {
+
     @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response)
@@ -32,17 +38,15 @@ public class AdminServlet extends HttpServlet
     {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("adminUserSession");
-        
-        if(user == null)
+
+        if (user == null)
         {
             response.sendRedirect("login");
-        }else
+        } else
         {
             request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
         }
-        
-        
-        
+
     }
 
     @Override
@@ -50,6 +54,44 @@ public class AdminServlet extends HttpServlet
             HttpServletResponse response)
             throws ServletException, IOException
     {
-       
+        String newUsername = request.getParameter("newUsernameTextField");
+        String newPassword = request.getParameter("newPasswordTextField");
+
+        String path = getServletContext().getRealPath("/WEB-INF/users.txt");
+        // to write files
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path), true));
+        PrintWriter pw = new PrintWriter(bw);
+
+        // to read files
+        BufferedReader br = new BufferedReader(new FileReader(new File(path)));
+        String line = null;
+
+        while ((line = br.readLine()) != null)
+        {
+
+            String[] values = line.split(",");
+
+            String usernameFromTextFile = values[0];
+            String passwordFromTextFile = values[1];
+            int isAdminFromTextFile = Integer.parseInt(values[2]);
+
+            if (newUsername.equals(usernameFromTextFile))
+            {
+                request.setAttribute("errorMsgAddUser", "Username already in use, please choose another");
+                request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
+            }
+
+        }
+
+        String userAllValues = newUsername.trim() + "," + newPassword.trim() + "," + "0".trim();
+        pw.print("\n" + userAllValues.trim());
+        pw.close();
+        bw.close();
+        br.close();
+        request.setAttribute("successMsgAddUser", "New User Added");
+        request.getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
+
+        
+
     }
 }

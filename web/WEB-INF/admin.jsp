@@ -25,23 +25,28 @@
             password: <input type="password" name="newPasswordTextField"value=""/>  <br>
             <input type="submit" value="Add User"/>
         </form> <br>
+        
+        ${errorMsgAddUser}
+        ${successMsgAddUser}
 
         <h1>List of Users</h1><br>
 
         <table>
-        	<tr>
-        		<th>Username</th>
-        		<th>Password</th>
-        		<th>Delete</th>
-        	</tr>
-        	<tr>
-        	     <td>test</td>
-        	     <td>test</td>
-        	     <td>test<input type="radio" name="test"/>
-                     </td>
-        	</tr>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Delete</th>
+            </tr>
+            <tr>
+                <td>test</td>
+                <td>test</td>
+                <td><input type="radio" name="test"/></td>
+            </tr>
         </table>
-
+        <form action="admin?action=deleteUser" method="post">
+            <input type="submit" value="Delete User"/>
+        </form>
+        
 
 
 

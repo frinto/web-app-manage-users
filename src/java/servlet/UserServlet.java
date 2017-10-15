@@ -63,7 +63,7 @@ public class UserServlet extends HttpServlet
         User user = (User) session.getAttribute("regularUserSession");
 
         String path = getServletContext().getRealPath("/WEB-INF/users.txt");
-        // to read files
+        // to write to files
         BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path),true));
         PrintWriter pw = new PrintWriter(bw);
 

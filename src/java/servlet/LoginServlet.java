@@ -67,7 +67,7 @@ public class LoginServlet extends HttpServlet
             throws ServletException, IOException
     {
         String path = getServletContext().getRealPath("/WEB-INF/users.txt");
-        // to read files
+        // to read file
         BufferedReader br = new BufferedReader(new FileReader(new File(path)));
 
         String action = request.getParameter("action");
