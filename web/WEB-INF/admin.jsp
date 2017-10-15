@@ -39,11 +39,11 @@
             </tr>
             
             
-            <c:forEach var="item" items="${userList}">
+            <c:forEach var="item" items="${userList}" varStatus="status">
                 <tr>
                     <td><c:out value="${item.username}"/></td>
                     <td><c:out value="${item.password}"/></td>
-                    <td><input type="radio" name="test"/></td>
+                    <td><input type="radio" name="deleteUserRadio" value="${status.index}"/></td>
                 </tr>
             </c:forEach>
         </table>
